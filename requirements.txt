@@ -1,0 +1,3 @@
+python-dotenv
+pygsheets
+google-api-python-client
