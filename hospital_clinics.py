@@ -7,19 +7,17 @@ Original file is located at
     https://colab.research.google.com/drive/1pW55Rizj9u61prHeFjbbClPe_kAhs-uj
 """
 
-# Install package to load .env file
-!pip install python-dotenv
-
-# Import the .env file
+import time, sys, os, pygsheets, requests, pprint
+from playsound import playsound
 from google.colab import userdata
+import pandas as pd
+
 secret_key = userdata.get('SERP_API_KEY')
 address = userdata.get('address')
 print(secret_key)
 print(address)
 
 # Execute the SERP search
-import requests, pprint
-
 def find_healthcare_institutions_near_address(query, address, api_key):
     params = {
         "q": query + address,  # The search query for clinics near the address
@@ -57,7 +55,6 @@ clinics = find_healthcare_institutions_near_address("hospitals or clinics near "
 
 # address, hours, open_state, operating_housrs, phone, rating, title
 # type, website
-import pandas as pd
 df = pd.DataFrame(clinics, columns=['title', 'phone', 'address', 'hours', 'open_state', 'operating_hours',
                                     'rating', 'website', 'type'])
 # Remove rows without a website
@@ -71,8 +68,6 @@ print(f'There are {shape[0]} clinics in NY with {shape[1]} fields')
 csv_data = filtered.to_csv();
 
 # Install pygsheets
-!pip install pygsheets
-import pygsheets, os
 
 path = "/content/galvanic-augury-431216-k5-1a3cfbfcec7a.json"
 
@@ -99,12 +94,6 @@ worksheet.set_dataframe(filtered, (1, 1))  # Starting from the first row and fir
 
 print("DataFrame written to Google Sheets successfully!")
 
-!pip install playsound
-# !pip install pygobject
-
-import time, sys, os
-from playsound import playsound
-
 message = "Here is something to ponder \r\
 about the way I may want to try creating\r \ the typewriter effect in Python. \r \ Here is something to ponder about the way I may want to try creating the typewriter effect in Python."
 
@@ -121,6 +110,6 @@ def type_effect(msg, speed = 0.05):
       time.sleep(speed*2)
 
 # type_effect(message, 0.1)
-playsound("sound.mp3", 0)
+# playsound("sound.mp3", 0)
 
 #
